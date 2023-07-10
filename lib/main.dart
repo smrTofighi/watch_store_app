@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:watch_store_app/screens/send_otp_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,9 +9,10 @@ void main() {
  
    @override
    Widget build(BuildContext context) {
-     return const MaterialApp(
+     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Watch Store',
+      home: SendOtpScreen(),
      );
    }
  }
