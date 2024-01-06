@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:watch_store_app/components/button_style.dart';
 
+import '../components/text_style.dart';
+
 // ignore: must_be_immutable
 class MainButton extends StatelessWidget {
   MainButton({
@@ -19,7 +21,10 @@ class MainButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: AppButtonStyle.mainButtonStyle,
-        child: Text(text),
+        child: Text(
+          text,
+          style: LightAppTextStyles.buttonText,
+        ),
       ),
     );
   }
