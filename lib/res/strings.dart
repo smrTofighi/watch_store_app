@@ -28,6 +28,7 @@ abstract class AppString {
   static const String digital = "دیجیتال";
   static const String desktop = "رو میزی";
   static const String viewAll = "مشاهده همه";
+  static const String sendToAddress = "ارسال به آدرس";
   static const String amazing = "شگفت انگیز";
   static const String home = "خانه";
   static const String basket = "سبد خرید";
@@ -47,4 +48,5 @@ abstract class AppString {
   static const String inProccess = "درحال پردازش";
   static const String cancelled = "لغو شده";
   static const String delivered = "تحویل شده";
+  static const String lurem = "لوازم ایپوسرم نمیدونم چی هست فقط برای تست گذاشتم";
 }

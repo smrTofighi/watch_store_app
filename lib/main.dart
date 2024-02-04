@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       title: 'Watch Store',
       theme: lightTheme(),
       routes: routes,
-      initialRoute: ScreensName.root,
+      initialRoute: ScreensName.mainScreen,
     );
   }
 }

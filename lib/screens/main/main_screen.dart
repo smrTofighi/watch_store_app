@@ -62,7 +62,7 @@ class _MainScreenState extends State<MainScreen> {
                   Navigator(
                     key: _keyBascket,
                     onGenerateRoute: (settings) => MaterialPageRoute(
-                      builder: (context) => const BascketScreen(),
+                      builder: (context) => const BasketScreen(),
                     ),
                   ),
                   Navigator(

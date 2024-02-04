@@ -30,7 +30,7 @@ class ProductItem extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Color.fromARGB(255, 238, 238, 238),
+            Color.fromARGB(255, 230, 230, 230),
             Color.fromARGB(255, 255, 255, 255)
           ],
         ),

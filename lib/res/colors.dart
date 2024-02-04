@@ -14,7 +14,7 @@ class LightAppColor {
   static const Color border = Color.fromARGB(255, 217, 220, 228);
   static const Color focusedBorder = Color.fromARGB(255, 0, 117, 251);
   static const Color button = Color.fromARGB(255, 0, 117, 251);
-  static const Color suraface = Color.fromARGB(255, 243, 243, 243);
+  static const Color surface = Color.fromARGB(255, 243, 243, 243);
   static const Color scaffoldBG = Color.fromARGB(255, 251, 251, 251);
   static const Color bottomNavBG = Color.fromARGB(255, 255, 255, 255);
   static const Color amazingColor = Color.fromARGB(255, 57, 24, 80);
