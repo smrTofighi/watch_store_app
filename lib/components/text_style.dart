@@ -6,15 +6,11 @@ import '../gen/fonts.gen.dart';
 abstract class LightAppTextStyles {
   LightAppTextStyles._();
   static const TextStyle selectedTab = TextStyle(
-    fontSize: 14, 
-    fontFamily: FontFamily.dana,
-    color: LightAppColor.title
-  );
+      fontSize: 14, fontFamily: FontFamily.dana, color: LightAppColor.title);
   static TextStyle unSelectedTab = TextStyle(
-    fontSize: 14, 
-    fontFamily: FontFamily.dana,
-    color: LightAppColor.title.withAlpha(125)
-  );
+      fontSize: 14,
+      fontFamily: FontFamily.dana,
+      color: LightAppColor.title.withAlpha(125));
 
   static const TextStyle productTitle = TextStyle(
       fontFamily: FontFamily.dana,
@@ -51,7 +47,7 @@ abstract class LightAppTextStyles {
       fontFamily: FontFamily.dana,
       fontSize: 14,
       color: LightAppColor.title,
-      fontWeight: FontWeight.w700);
+      fontWeight: FontWeight.w500);
   static const TextStyle tagTitle = TextStyle(
       fontFamily: FontFamily.dana,
       fontSize: 14,

@@ -22,3 +22,30 @@ class LightAppColor {
   static const Color bottomNavActive = Colors.black;
   static const Color bottomNavDeActive = Color.fromARGB(255, 196, 196, 196);
 }
+
+class GradientColors {
+  GradientColors._();
+  static const List<Color> colors1 = [
+    Color.fromARGB(255, 255, 166, 114),
+    Color.fromARGB(255, 255, 227, 200),
+  ];
+  static const List<Color> colors2 = [
+    Color.fromARGB(255, 139, 162, 168),
+    Color.fromARGB(255, 223, 238, 245),
+  ];
+  static const List<Color> colors3 = [
+    Color(0xFFE183D4),
+    Color(0xFFFFE6F5),
+  ];
+  static const List<Color> colors4 = [
+    Color(0xFF8396E1),
+    Color(0xFFE6FCFF),
+  ];
+
+  static List colorList= [
+    colors1,
+    colors2,
+    colors3,
+    colors4,
+  ];
+}

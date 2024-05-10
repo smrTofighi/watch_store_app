@@ -1,24 +1,46 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:watch_store_app/components/text_style.dart';
 import 'package:watch_store_app/gen/assets.gen.dart';
 import 'package:watch_store_app/res/dimens.dart';
 import 'package:watch_store_app/components/extension.dart';
+import 'package:watch_store_app/utils/format_time.dart';
 
-class ProductItem extends StatelessWidget {
+class ProductItem extends StatefulWidget {
   const ProductItem({
     super.key,
     required this.title,
     required this.price,
     this.oldPrice = 0,
     this.discount = 0,
-    this.time = 0,
+    this.time = '0',
   });
   final String title;
   final int price;
   final int oldPrice;
   final int discount;
-  final int time;
+  final String time;
 
+  @override
+  State<ProductItem> createState() => _ProductItemState();
+}
+
+class _ProductItemState extends State<ProductItem> {
+  Duration _duration = Duration(seconds: 0);
+  late Timer _timer;
+  late int inSeconds;
+  @override
+  void initState() {
+    super.initState();
+    DateTime now = DateTime.now();
+    DateTime expiration = DateTime.parse(widget.time);  
+    _duration = now.difference(expiration).abs();
+
+    inSeconds = _duration.inSeconds;
+    startTimer();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,7 +65,7 @@ class ProductItem extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: Text(
-              title,
+              widget.title,
               style: LightAppTextStyles.productTitle,
             ),
           ),
@@ -55,33 +77,37 @@ class ProductItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${price.separateWithComma} تومان',
+                    '${widget.price.separateWithComma} تومان',
                     style: LightAppTextStyles.title,
                   ),
                   Visibility(
-                    visible: discount > 0 ? true : false,
+                    visible: widget.discount > 0 ? true : false,
                     child: Text(
-                      oldPrice.separateWithComma,
+                      widget.oldPrice.separateWithComma,
                       style: LightAppTextStyles.oldPriceStyle,
                     ),
                   ),
                 ],
               ),
               Visibility(
-                visible: discount > 0 ? true : false,
+                visible: widget.discount > 0 ? true : false,
                 child: Container(
-                  padding: const EdgeInsets.all(AppDimens.small / 2),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(60),
                       color: Colors.red),
-                  child: Text('$discount %'),
+                  child: Text(
+                    '${widget.discount} %',
+                    style: const TextStyle(color: Colors.white),
+                  ),
                 ),
               )
             ],
           ),
           AppDimens.large.height,
           Visibility(
-            visible: time > 0 ? true : false,
+            visible:_duration.inSeconds >0  ? true : false,
             child: Container(
               height: 2,
               width: double.infinity,
@@ -90,14 +116,28 @@ class ProductItem extends StatelessWidget {
           ),
           AppDimens.medium.height,
           Visibility(
-            visible: time > 0 ? true : false,
+            visible: _duration.inSeconds >0 ? true : false,
             child: Text(
-              time.toString(),
+             formateTime(inSeconds),
               style: LightAppTextStyles.prodTimer,
             ),
           )
         ],
       ),
     );
+  }
+  
+  void startTimer() {
+    const onSecond = Duration(seconds: 1);
+  _timer = Timer.periodic(onSecond, (timer) {
+    setState(() {
+      if(inSeconds ==0){
+        log('Product onTap Limited');
+
+      }else {
+        inSeconds--;
+      }
+    });
+  });
   }
 }

@@ -1,40 +1,23 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:watch_store_app/data/model/slide_model.dart';
 import 'package:watch_store_app/res/dimens.dart';
 
-final List<String> imgList = [
-  'https://ticktackgallery.com/media/wysiwyg/ticktackbanner/men.png',
-  'https://ticktackgallery.com/media/wysiwyg/ticktackbanner/women.png',
-  'https://ticktackgallery.com/media/wysiwyg/ticktackbanner/women.png',
-  'https://ticktackgallery.com/media/wysiwyg/ticktackbanner/men.png',
-];
+
 
 class AppSilder extends StatefulWidget {
   const AppSilder({
-    super.key,
+    super.key, required this.imgList,
   });
-
+  final List<SlideModel> imgList;
   @override
   State<AppSilder> createState() => _AppSilderState();
 }
 
 class _AppSilderState extends State<AppSilder> {
   final CarouselController carouselController = CarouselController();
-  final List<Widget> items = imgList
-      .map(
-        (e) => Padding(
-          padding: const EdgeInsets.all(AppDimens.medium),
-          child: ClipRRect(
-            child: Image.network(
-              e,
-              fit: BoxFit.cover,
-            ),
-            borderRadius: BorderRadius.circular(AppDimens.medium),
-          ),
-        ),
-      )
-      .toList();
+
   int current = 0;
   @override
   Widget build(BuildContext context) {
@@ -44,7 +27,20 @@ class _AppSilderState extends State<AppSilder> {
       child: Column(
         children: [
           CarouselSlider(
-            items: items,
+            items: widget.imgList
+      .map(
+        (e) => Padding(
+          padding: const EdgeInsets.all(AppDimens.medium),
+          child: ClipRRect(
+            child: Image.network(
+              e.image,
+              fit: BoxFit.cover,
+            ),
+            borderRadius: BorderRadius.circular(AppDimens.medium),
+          ),
+        ),
+      )
+      .toList(),
             carouselController: carouselController,
             options: CarouselOptions(
               autoPlay: true,
@@ -57,7 +53,7 @@ class _AppSilderState extends State<AppSilder> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: imgList.asMap().entries
+            children: widget.imgList .asMap().entries
                 .map((e) => GestureDetector(
                   onTap: () => carouselController.animateToPage(e.key),
                                   child: Container(

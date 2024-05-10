@@ -36,12 +36,12 @@ class CategoryWidget extends StatelessWidget {
                 colors: colors,
               ),
             ),
-            child: SvgPicture.asset(path),
+            child: Image.network(path),
           ),
           (AppDimens.small / 2).height,
           Text(
             title,
-            style: LightAppTextStyles.title,
+            style: LightAppTextStyles.title.copyWith(fontSize: 12),
           )
         ],
       ),
