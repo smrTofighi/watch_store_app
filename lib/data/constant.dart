@@ -10,6 +10,7 @@ class EndPoints {
   static const String productsByCategory = '${baseUrl}products_by_category/';
   static const String search = '${baseUrl}all_products/';
   static const String home = '${baseUrl}home';
+  static const String productDetails = '${baseUrl}product_details/';
 }
 
 class ProductSortRoutes{

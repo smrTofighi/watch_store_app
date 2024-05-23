@@ -4,11 +4,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:watch_store_app/components/text_style.dart';
 import 'package:watch_store_app/data/repository/home_repository.dart';
 import 'package:watch_store_app/features/main/home/bloc/home_bloc.dart';
+import 'package:watch_store_app/features/product/product_list/product_list_screen.dart';
 import 'package:watch_store_app/gen/assets.gen.dart';
 import 'package:watch_store_app/res/colors.dart';
 import 'package:watch_store_app/res/dimens.dart';
 
 import 'package:watch_store_app/components/extension.dart';
+import 'package:watch_store_app/route/names.dart';
 import 'package:watch_store_app/widgets/category_widget.dart';
 import 'package:watch_store_app/widgets/product_item.dart';
 import 'package:watch_store_app/widgets/search_appbar.dart';
@@ -49,7 +51,14 @@ class HomeScreen extends StatelessWidget {
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) => CategoryWidget(
                             title: state.homeModel.categories[index].title,
-                            onTap: () {},
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProductListScreen(
+                                  param: state.homeModel.categories[index].id,
+                                ),
+                              ),
+                            ),
                             colors: GradientColors.colorList[index],
                             path: state.homeModel.categories[index].image,
                           ),
@@ -67,6 +76,8 @@ class HomeScreen extends StatelessWidget {
                               : ProductItem(
                                   title: state
                                       .homeModel.amazingProducts[index].title,
+                                      id: state
+                                      .homeModel.amazingProducts[index].id,
                                   price: state
                                       .homeModel.amazingProducts[index].price,
                                   discount: state.homeModel

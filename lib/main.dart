@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:watch_store_app/components/theme.dart';
@@ -13,10 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferencesManager().init();
   runApp(
-    DevicePreview(
-      builder: (context) => const MyApp(),
-      enabled: true,
-    ),
+    const MyApp()
   );
 }
 
