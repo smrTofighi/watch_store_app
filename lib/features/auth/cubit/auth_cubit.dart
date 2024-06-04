@@ -10,7 +10,11 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitialState()) {
-    emit(AuthLoggedInState());
+    if(SharedPreferencesManager().getString(SharedPreferencesConstants.token) == null){
+      emit(AuthLoggedOutState());
+    }else{
+      emit(AuthLoggedInState());
+    }
   }
   final Dio _dio = Dio();
   sendCode(String mobile) async {
@@ -35,7 +39,8 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       await _dio.post(EndPoints.checkSmsCode,
           data: {'mobile': mobile, 'code': code}).then((value) {
-        if (value.statusCode == 201) {
+            log(value.toString());
+        if (value.data['result'] == true) {
           SharedPreferencesManager()
               .saveString(SharedPreferencesConstants.token, value.data['data']['token']);
           if (value.data['data']['is_registered']) {

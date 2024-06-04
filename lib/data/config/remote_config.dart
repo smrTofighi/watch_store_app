@@ -9,7 +9,8 @@ class AuthInterceptor extends Interceptor {
     String? token =
         SharedPreferencesManager().getString(SharedPreferencesConstants.token);
     if (token != null) {
-      options.headers['Authorization'] = 'Bearer $token';
+      //options.headers['Authorization'] = 'Bearer $token';
+      options.headers['Authorization'] = 'Bearer 1346|3rXgLULbTyZ9WaRz4kwFdKWDzUsyAF4I9foRuSC0';
     }
     super.onRequest(options, handler);
   }

@@ -25,7 +25,7 @@ class CategoryWidget extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.all(AppDimens.small / 2),
-            margin: const EdgeInsets.all(AppDimens.small),
+            margin: const EdgeInsets.all(AppDimens.small * 2),
             width: 70,
             height: 70,
             decoration: BoxDecoration(

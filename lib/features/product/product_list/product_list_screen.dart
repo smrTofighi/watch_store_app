@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:watch_store_app/components/text_style.dart';
+import 'package:watch_store_app/data/repository/cart_repository.dart';
 import 'package:watch_store_app/data/repository/product_repository.dart';
 import 'package:watch_store_app/features/product/product_list/bloc/product_list_bloc.dart';
 import 'package:watch_store_app/gen/assets.gen.dart';
@@ -32,7 +33,10 @@ class ProductListScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CartBadge(count: 2),
+                  ValueListenableBuilder(
+                    valueListenable: cartRepository.cartCount,
+                    builder: (context, value, child) => CartBadge(count: value),
+                  ),
                   Row(
                     children: [
                       Text('پرفروش ترین'),
@@ -70,10 +74,10 @@ class ProductListScreen extends StatelessWidget {
                                   childAspectRatio: 0.5),
                           itemBuilder: (context, index) => ProductItem(
                             title: state.products[index].title,
-                            id:state.products[index].id ,
+                            id: state.products[index].id,
                             discount: state.products[index].discount,
-                           time: state.products[index].specialExpiration,
-                           oldPrice: state.products[index].discountPrice,
+                            time: state.products[index].specialExpiration,
+                            oldPrice: state.products[index].discountPrice,
                             price: state.products[index].price,
                           ),
                         ),

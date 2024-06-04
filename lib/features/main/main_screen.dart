@@ -3,7 +3,7 @@ import 'package:watch_store_app/data/product_repo_test.dart';
 import 'package:watch_store_app/gen/assets.gen.dart';
 import 'package:watch_store_app/res/colors.dart';
 import 'package:watch_store_app/res/strings.dart';
-import 'package:watch_store_app/features/main/bascket_screen.dart';
+import 'package:watch_store_app/features/main/cart/cart_screen.dart';
 import 'package:watch_store_app/features/main/home/home_screen.dart';
 import 'package:watch_store_app/features/main/profile_screen.dart';
 import 'package:watch_store_app/widgets/btm_nav_item_widget.dart';
@@ -65,7 +65,7 @@ class _MainScreenState extends State<MainScreen> {
                   Navigator(
                     key: _keyBascket,
                     onGenerateRoute: (settings) => MaterialPageRoute(
-                      builder: (context) => const BasketScreen(),
+                      builder: (context) => const CartScreen(),
                     ),
                   ),
                   Navigator(

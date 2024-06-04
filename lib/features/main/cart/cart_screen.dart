@@ -9,8 +9,8 @@ import 'package:watch_store_app/widgets/app_bar.dart';
 import 'package:watch_store_app/widgets/surface_container.dart';
 import 'package:watch_store_app/components/extension.dart';
 
-class BasketScreen extends StatelessWidget {
-  const BasketScreen({super.key});
+class CartScreen extends StatelessWidget {
+  const CartScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

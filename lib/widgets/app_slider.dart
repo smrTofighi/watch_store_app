@@ -23,7 +23,7 @@ class _AppSilderState extends State<AppSilder> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 250,
+      height: 265,
       child: Column(
         children: [
           CarouselSlider(

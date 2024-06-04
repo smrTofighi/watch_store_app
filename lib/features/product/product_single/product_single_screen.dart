@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:watch_store_app/components/text_style.dart';
 import 'package:watch_store_app/data/model/product_details_model.dart';
+import 'package:watch_store_app/data/repository/cart_repository.dart';
 import 'package:watch_store_app/data/repository/product_repository.dart';
+import 'package:watch_store_app/features/main/cart/bloc/cart_bloc.dart';
 import 'package:watch_store_app/features/product/product_single/bloc/product_single_bloc.dart';
 import 'package:watch_store_app/gen/assets.gen.dart';
 import 'package:watch_store_app/res/colors.dart';
@@ -17,14 +21,24 @@ class ProductSingleScreen extends StatelessWidget {
   final id;
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        final productSingleBloc = ProductSingleBloc(productRepository);
-        productSingleBloc.add(ProductSingleInitEvent(id: id));
-        return productSingleBloc;
-      },
-      child: BlocConsumer<ProductSingleBloc, ProductSingleState>(
-        listener: (context, state) {},
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) {
+            final productSingleBloc = ProductSingleBloc(productRepository);
+            productSingleBloc.add(ProductSingleInitEvent(id: id));
+            return productSingleBloc;
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            final cartBloc = CartBloc(cartRepository);
+            cartBloc.add(CartCountItemEvent());
+            return cartBloc;
+          },
+        ),
+      ],
+      child: BlocBuilder<ProductSingleBloc, ProductSingleState>(
         builder: (context, state) {
           if (state is ProductSingleLoadingState) {
             return const Center(
@@ -39,7 +53,11 @@ class ProductSingleScreen extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: AppDimens.small),
                   child: Row(
                     children: [
-                      const CartBadge(count: 2),
+                      ValueListenableBuilder(
+                        valueListenable: cartRepository.cartCount,
+                        builder: (context, value, child) =>
+                            CartBadge(count: value),
+                      ),
                       Expanded(
                         child: FittedBox(
                           child: Text(
@@ -58,57 +76,81 @@ class ProductSingleScreen extends StatelessWidget {
                     ],
                   ),
                 )),
-                body: Stack(
-                  children: [
-                    SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Image.network(
-                            state.productModel.image!,
-                            fit: BoxFit.cover,
-                            //width: MediaQuery.sizeOf(context).width,
-                            scale: 1,
-                          ),
-                          Container(
-                            margin: const EdgeInsets.all(AppDimens.medium),
-                            padding: const EdgeInsets.all(AppDimens.medium),
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.circular(AppDimens.medium),
-                              color: const Color(0xFFFFFFFF),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  state.productModel.brand!,
-                                  style: LightAppTextStyles.productTitle,
-                                  textDirection: TextDirection.rtl,
-                                ),
-                                AppDimens.small.height,
-                                Text(
-                                  state.productModel.title!,
-                                  style: LightAppTextStyles.caption,
-                                  textDirection: TextDirection.rtl,
-                                ),
-                                const Divider(),
-                                ProductTabView(
-                                  productModel: state.productModel,
-                                ),
-                                (AppDimens.large * 6).height
-                              ],
-                            ),
-                          )
-                        ],
+                body: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Image.network(
+                        state.productModel.image!,
+                        fit: BoxFit.cover,
+                        //width: MediaQuery.sizeOf(context).width,
+                        scale: 1,
                       ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      left: AppDimens.large,
-                      right: AppDimens.large,
-                      child: ElevatedButton(
-                        onPressed: () {},
+                      Container(
+                        margin: const EdgeInsets.all(AppDimens.medium),
+                        padding: const EdgeInsets.all(AppDimens.medium),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(AppDimens.medium),
+                          color: const Color(0xFFFFFFFF),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              state.productModel.brand!,
+                              style: LightAppTextStyles.productTitle,
+                              textDirection: TextDirection.rtl,
+                            ),
+                            AppDimens.small.height,
+                            Text(
+                              state.productModel.title!,
+                              style: LightAppTextStyles.caption,
+                              textDirection: TextDirection.rtl,
+                            ),
+                            const Divider(),
+                            ProductTabView(
+                              productModel: state.productModel,
+                            ),
+                            (AppDimens.large * 6).height
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                extendBody: true,
+                bottomNavigationBar: Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 90),
+                  child: BlocConsumer<CartBloc, CartState>(
+                    listener: (cartContext, cartState) {
+                      if (cartState is CartItemAddedState) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            duration: const Duration(seconds: 1),
+                            backgroundColor:
+                                const Color.fromARGB(15, 0, 255, 132),
+                            content: Text(
+                              "با موفقیت به سبد خرید افزوده شد",
+                              style: LightAppTextStyles.caption.copyWith(
+                                color: const Color(0xFFFFFFFF),
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                    builder: (cartContext, cartState) {
+                      if (cartState is CartLoadingState) {
+                        return const Center(
+                          child: LinearProgressIndicator(),
+                        );
+                      }
+                      return ElevatedButton(
+                        onPressed: () {
+                          log(state.productModel.id.toString());
+                          BlocProvider.of<CartBloc>(context)
+                              .add(AddToCartEvent(state.productModel.id!));
+                        },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: LightAppColor.primary),
                         child: const Text(
@@ -118,9 +160,9 @@ class ProductSingleScreen extends StatelessWidget {
                               fontSize: 16,
                               fontWeight: FontWeight.w700),
                         ),
-                      ),
-                    )
-                  ],
+                      );
+                    },
+                  ),
                 ),
               ),
             );
@@ -200,21 +242,19 @@ class PropertiesList extends StatelessWidget {
   final List<Properties> properties;
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-        physics: const ClampingScrollPhysics(),
-        itemCount: properties.length,
-        shrinkWrap: true,
-        itemBuilder: (context, index) => Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(AppDimens.medium),
-          margin: const EdgeInsets.all(AppDimens.medium),
-          color: LightAppColor.surface,
-          child: Text(
-            "${properties[index].property} : ${properties[index].value}",
-            style: LightAppTextStyles.caption,
-            textAlign: TextAlign.right,
-          ),
+    return ListView.builder(
+      physics: const ClampingScrollPhysics(),
+      itemCount: properties.length,
+      shrinkWrap: true,
+      itemBuilder: (context, index) => Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(AppDimens.medium),
+        margin: const EdgeInsets.all(AppDimens.medium),
+        color: LightAppColor.surface,
+        child: Text(
+          "${properties[index].property} : ${properties[index].value}",
+          style: LightAppTextStyles.caption,
+          textAlign: TextAlign.right,
         ),
       ),
     );
@@ -235,21 +275,19 @@ class CommentsList extends StatelessWidget {
   final List<Comments> comments;
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-        physics: const ClampingScrollPhysics(),
-        itemCount: comments.length,
-        shrinkWrap: true,
-        itemBuilder: (context, index) => Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(AppDimens.medium),
-          margin: const EdgeInsets.all(AppDimens.medium),
-          color: LightAppColor.surface,
-          child: Text(
-            "${comments[index].user} : ${comments[index].body}",
-            style: LightAppTextStyles.caption,
-            textAlign: TextAlign.right,
-          ),
+    return ListView.builder(
+      physics: const ClampingScrollPhysics(),
+      itemCount: comments.length,
+      shrinkWrap: true,
+      itemBuilder: (context, index) => Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(AppDimens.medium),
+        margin: const EdgeInsets.all(AppDimens.medium),
+        color: LightAppColor.surface,
+        child: Text(
+          "${comments[index].user} : ${comments[index].body}",
+          style: LightAppTextStyles.caption,
+          textAlign: TextAlign.right,
         ),
       ),
     );
