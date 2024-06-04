@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+import 'package:watch_store_app/data/config/remote_config.dart';
 import 'package:watch_store_app/data/model/product_details_model.dart';
 import 'package:watch_store_app/data/model/product_model.dart';
 import 'package:watch_store_app/data/src/product_data_src.dart';
@@ -38,4 +38,4 @@ class ProductRepository implements IProductRepository {
 }
 
 final ProductRepository productRepository =
-    ProductRepository(ProductRemoteDataSrc(Dio()));
+    ProductRepository(ProductRemoteDataSrc(DioManager.dio));

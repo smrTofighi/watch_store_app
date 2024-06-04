@@ -11,6 +11,10 @@ class EndPoints {
   static const String search = '${baseUrl}all_products/';
   static const String home = '${baseUrl}home';
   static const String productDetails = '${baseUrl}product_details/';
+  static const String userCart = '${baseUrl}user_cart';
+  static const String addToCart = '${baseUrl}add_to_cart';
+  static const String removeFromCart = '${baseUrl}remove_from_cart';
+  static const String deleteFromCart = '${baseUrl}delete_from_cart';
 }
 
 class ProductSortRoutes{
